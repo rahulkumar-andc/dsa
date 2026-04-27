@@ -1,0 +1,96 @@
+#include<iostream>
+using namespace std;
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int data) {
+        this->data = data;
+        this->next = nullptr;
+    }
+    
+};
+
+void insertAtHead(Node*& head, int d) {
+    Node* temp = new Node(d);
+    temp->data = d;
+    temp->next = head;
+    head = temp;
+}
+
+void insertAtTail(Node*& head, int d) {
+    Node* temp = new Node(d);
+    temp->data = d;
+    if (head == nullptr) {
+        head = temp;
+        return;
+    }
+    Node* tail = head;
+    while (tail->next != nullptr) {
+        tail = tail->next;
+    }
+    tail->next = temp;
+}
+
+void insertAtPosition(Node*& head, int position, int d) {
+    if (position == 0) {
+        insertAtHead(head, d);
+        return;
+    }
+    Node* temp = head;
+    for (int i = 1; i < position && temp != nullptr; i++) {
+        temp = temp->next;
+    }
+    if (temp == nullptr) {
+        insertAtTail(head, d);
+        return;
+    }
+    Node* nodeToInsert = new Node(d);
+    nodeToInsert->data = d;
+    nodeToInsert->next = temp->next;
+    temp->next = nodeToInsert;
+}
+
+void printList(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    cout << "nullptr" << endl;
+}
+
+void deleteList(Node*& head) {
+    Node* current = head;
+    Node* nextNode;
+    while (current != nullptr) {
+        nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+    head = nullptr;
+}
+
+void deleteNode(Node*& head, int position) {
+    if (head == nullptr) return;
+    if (position == 0) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        return;
+    }
+    Node* current = head;
+    for (int i = 1; i < position && current->next != nullptr; i++) {
+        current = current->next;
+    }
+    if (current->next == nullptr) return;
+    Node* nodeToDelete = current->next;
+    current->next = nodeToDelete->next;
+    delete nodeToDelete;
+
+}
+int main() {
+    Node* head = new Node(25);
+    cout << "Node data: " << head->data << endl;
+    return 0;
+} 
